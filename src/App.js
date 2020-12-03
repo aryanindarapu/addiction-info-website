@@ -1,42 +1,87 @@
 import React, { Component } from 'react'
+
 import Navigation from './components/navigation';
 import HeaderMap from './components/HeaderMap';
-import Features from './components/features';
 import About from './components/about';
-import Services from './components/services';
-import Gallery from './components/gallery';
-import Testimonials from './components/testimonials';
-import Team from './components/Team';
-import Contact from './components/contact';
-import JsonData from './data/data.json';
+import Info from './components/info';
 
-export class App extends Component {
-  state = {
-    landingPageData: {},
-  }
-  getlandingPageData() {
-    this.setState({landingPageData : JsonData})
+export function tabChange(clickedTab) {
+  this.setState({currentTab: clickedTab})
+}
+
+
+export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentTab: "home",
+    }
   }
 
   componentDidMount() {
-    this.getlandingPageData();
+    tabChange = tabChange.bind(this)
+    this.pickTab = this.pickTab(this)
+  }
+
+  pickTab = (tabName) => {
+    console.log(tabName)
+    switch (tabName){
+      case 'home':
+        return <HeaderMap />
+      case 'about':
+        return <About />  
+      case 'info':
+        return <Info />
+      default:
+        return <HeaderMap />
+    }
+        
+  }
+
+  checkVal = (value) => {
+    console.log("Context value is: " + value)
   }
 
   render() {
-    return (
-      <div>
-        <Navigation />
-        <HeaderMap />
-        {/* <Features data={this.state.landingPageData.Features} />
-        <About data={this.state.landingPageData.About} />
-        <Services data={this.state.landingPageData.Services} />
-        <Gallery />
-        <Testimonials data={this.state.landingPageData.Testimonials} />
-        <Team data={this.state.landingPageData.Team} />
-        <Contact data={this.state.landingPageData.Contact} /> */}
-      </div>
-    )
+    switch (this.state.currentTab){
+      case 'home':
+        return (
+          <div>
+            <Navigation />
+            <HeaderMap />
+          </div>
+        )
+      case 'about':
+        return (
+          <div>
+            <Navigation />
+            <About />
+          </div>
+        )
+      case 'info':
+        return (
+          <div>
+            <Navigation />
+            <Info />
+          </div>
+        )
+      default:
+        return (
+          <div>
+            <Navigation />
+            <HeaderMap />
+          </div>
+        )
+    }
+        
   }
 }
 
-export default App;
+// <button style={{paddingTop: "100px"}} onClick={() => this.checkVal(this.state.currentTab)}>Check Value</button>
+/* <Features data={this.state.landingPageData.Features} />
+<About data={this.state.landingPageData.About} />
+<Services data={this.state.landingPageData.Services} />
+<Gallery />
+<Testimonials data={this.state.landingPageData.Testimonials} />
+<Team data={this.state.landingPageData.Team} />
+<Contact data={this.state.landingPageData.Contact} /> */

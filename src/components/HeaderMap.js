@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 
+
+
 class HeaderMap extends Component {
   state = {
     defaultCenter: {lat: 34.153417446874386, lng: -118.45955565226701},
     center: {lat: 0, lng: 0},
-    zoom: 11
+    zoom: 8
   }
 
   componentDidMount() {
@@ -24,6 +26,7 @@ class HeaderMap extends Component {
             defaultCenter={this.state.defaultCenter}
             defaultZoom={this.state.zoom}
           >
+            <button type="button" onClick="alert('hello world')" />
           </GoogleMapReact>
         </div>
       </body>
