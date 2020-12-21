@@ -20,22 +20,6 @@ export default class App extends Component {
 
   componentDidMount() {
     tabChange = tabChange.bind(this)
-    this.pickTab = this.pickTab(this)
-  }
-
-  pickTab = (tabName) => {
-    console.log(tabName)
-    switch (tabName){
-      case 'home':
-        return <HeaderMap />
-      case 'about':
-        return <About />  
-      case 'info':
-        return <Info />
-      default:
-        return <HeaderMap />
-    }
-        
   }
 
   checkVal = (value) => {
@@ -47,7 +31,7 @@ export default class App extends Component {
       case 'home':
         return (
           <div>
-            <Navigation />
+            {/* <Navigation /> */}
             <HeaderMap />
           </div>
         )
