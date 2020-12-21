@@ -49,7 +49,7 @@ class HeaderMap extends Component {
   render() {
     return (
       <LoadScript
-        googleMapsApiKey="AIzaSyC8Hk7qLyvebRrCcife6oGxOGV1zUCEkJE"
+        googleMapsApiKey="API_KEY_NEED_TO_STORE_SAFELY"
         libraries={["places"]}
       >
         <GoogleMap
