@@ -6,7 +6,7 @@ A website with extensive information on treatment for drug and alcohol addicts a
 With this website, we aim to:
 - Create a one-stop-shop for addiction treatments 
 - Help addicts who are looking for it
-- Educate the general public about the effectiveness of different types of addictions
+- Educate the general public about the effectiveness of different types of addiction treatments
 - Eventually get approval from the CDC, NIH, and other government organizations
 
 ## Current Status
