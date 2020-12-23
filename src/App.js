@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Navigation from './components/navigation';
-import HeaderMap from './components/HeaderMap';
+import MapFunc from './components/MapFunc';
 import About from './components/about';
 import Info from './components/info';
 
@@ -31,8 +31,12 @@ export default class App extends Component {
       case 'home':
         return (
           <div>
-            {/* <Navigation /> */}
-            <HeaderMap />
+            <div>
+              <Navigation />
+            </div>
+            <div>
+              <MapFunc />
+            </div>
           </div>
         )
       case 'about':
@@ -53,7 +57,7 @@ export default class App extends Component {
         return (
           <div>
             <Navigation />
-            <HeaderMap />
+            <MapFunc />
           </div>
         )
     }
