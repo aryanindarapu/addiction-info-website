@@ -31,7 +31,6 @@ export default class App extends Component {
       case 'home':
         return (
           // TODO Add Yelp-like review system
-          // TODO Add navbar back to div
           <div>
             <Navigation />
             <MapFunc />
