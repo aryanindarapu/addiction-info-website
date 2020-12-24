@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Navigation from './components/navigation';
+import Navigation from './components/Navigation';
 import MapFunc from './components/MapFunc';
 import About from './components/about';
 import Info from './components/info';
@@ -30,13 +30,11 @@ export default class App extends Component {
     switch (this.state.currentTab){
       case 'home':
         return (
+          // TODO Add Yelp-like review system
+          // TODO Add navbar back to div
           <div>
-            <div>
-              <Navigation />
-            </div>
-            <div>
-              <MapFunc />
-            </div>
+            <Navigation />
+            <MapFunc />
           </div>
         )
       case 'about':
@@ -64,12 +62,3 @@ export default class App extends Component {
         
   }
 }
-
-// <button style={{paddingTop: "100px"}} onClick={() => this.checkVal(this.state.currentTab)}>Check Value</button>
-/* <Features data={this.state.landingPageData.Features} />
-<About data={this.state.landingPageData.About} />
-<Services data={this.state.landingPageData.Services} />
-<Gallery />
-<Testimonials data={this.state.landingPageData.Testimonials} />
-<Team data={this.state.landingPageData.Team} />
-<Contact data={this.state.landingPageData.Contact} /> */
