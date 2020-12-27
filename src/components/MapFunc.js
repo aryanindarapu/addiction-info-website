@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { MdGpsFixed, MdGpsNotFixed } from 'react-icons/md'; 
 
-import { mapStyles } from '../data/mapStyles';
+import { mapContainerStyle, options } from '../styles/mapStyles';
 import '../index.css';
 
 // To access places libarary with Google Maps API
@@ -61,10 +61,11 @@ function MapFunc() {
 
   // Called when clicking on Marker
   const openInfoWindow = (selectedPlace) => {
+    panToLoc(selectedPlace.geometry.location)
     const google = window.google
     const service = new google.maps.places.PlacesService(mapRef.current)
 
-    setSelectedTreatmentLoc(selectedPlace)
+    setSelectedTreatmentLoc(selectedPlace, false)
 
     service.getDetails({
       placeId: selectedPlace.place_id
@@ -76,10 +77,12 @@ function MapFunc() {
   }
 
   // Pans to initial location and changes icon to solid
-  const panToInit = (initLocation) => {
-    mapRef.current.panTo(initLocation)
-    mapRef.current.setZoom(13)
-    setOnCenter(true)
+  const panToLoc = (loc, center) => {
+    mapRef.current.panTo(loc)
+    if (center) {
+      mapRef.current.setZoom(13)
+      setOnCenter(center)
+    }
   }
 
   const {isLoaded, loadError} = useLoadScript({
@@ -92,64 +95,52 @@ function MapFunc() {
 
   // TODO add Google Map ordered list
   return (
-      <div>
-        <button onClick={() => panToInit(initLocation)}>
-          {onCenter ? <MdGpsFixed className="gpsicon"  /> : <MdGpsNotFixed className="gpsicon" />}
-        </button>
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          zoom={13}
-          center={initLocation}
-          options={options}
-          onLoad={onMapLoad}
-          onTilesLoaded={fetchPlaces}
-          onCenterChanged={() => setOnCenter(false)}
-        >
-          {treatmentLocs && treatmentLocs.map((place, i) =>
-            <Marker 
-              key={i}
-              position={place.geometry.location}
-              onClick={() => openInfoWindow(place)}
-            />
-          )}
-          {// TODO Pan to nearest location
-          selectedTreatmentLoc && selectedTreatmentLocDetails && (
-            <InfoWindow            
-              position={selectedTreatmentLoc.geometry.location}
+    <div style={{position: 'relative'}}>
+      <a onClick={() => panToLoc(initLocation, true)}>
+        {onCenter ? <MdGpsFixed className="gpsicon"  /> : <MdGpsNotFixed className="gpsicon" />}
+      </a>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={13}
+        center={initLocation}
+        options={options}
+        onLoad={onMapLoad}
+        onTilesLoaded={fetchPlaces}
+        onCenterChanged={() => setOnCenter(false)}
+      >
+        {treatmentLocs && treatmentLocs.map((place, i) =>
+          <Marker 
+            key={i}
+            position={place.geometry.location}
+            onClick={() => openInfoWindow(place)}
+          />
+        )}
+        {// TODO Pan to nearest location
+        selectedTreatmentLoc && selectedTreatmentLocDetails && (
+          <InfoWindow            
+            position={selectedTreatmentLoc.geometry.location}
 
-              onCloseClick={() => {
-                setSelectedTreatmentLoc(null);
-              }}
-            >
-              <div>
-                <h3>{selectedTreatmentLoc.name}</h3>
-                <h5>{selectedTreatmentLocDetails.vicinity}</h5>
-                {
-                  // TODO automatically call by clicking phone # and address
-                }
-                <h5>{selectedTreatmentLocDetails.formatted_phone_number}</h5>
-                {
-                  // TODO add stars instead of number 
-                }
-                <p>Google Rating: {selectedTreatmentLocDetails.rating}/5</p> 
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
-      </div>
+            onCloseClick={() => {
+              setSelectedTreatmentLoc(null);
+            }}
+          >
+            <div>
+              <h3>{selectedTreatmentLoc.name}</h3>
+              <h5>{selectedTreatmentLocDetails.vicinity}</h5>
+              {
+                // TODO automatically call by clicking phone # and address
+              }
+              <h5>{selectedTreatmentLocDetails.formatted_phone_number}</h5>
+              {
+                // TODO add stars instead of number 
+              }
+              <p>Google Rating: {selectedTreatmentLocDetails.rating}/5</p> 
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
+    </div>
   )
-}
-
-const mapContainerStyle = {
-  width: '100%',
-  height: '100%'
-}
-
-const options = {
-  styles: mapStyles,
-  clickableIcons: false,
-  disableDefaultUI: true,
-  zoomControl: true
 }
 
 export default MapFunc;

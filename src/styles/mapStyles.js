@@ -1,4 +1,4 @@
-export const mapStyles = [
+const mapStyles = [
   {
       "featureType": "all",
       "elementType": "geometry.fill",
@@ -168,3 +168,15 @@ export const mapStyles = [
       ]
   }
 ]
+
+export const options = {
+    styles: mapStyles,
+    clickableIcons: false,
+    disableDefaultUI: true,
+    zoomControl: true
+}
+
+export const mapContainerStyle = {
+    width: '100%',
+    height: '100%',
+}

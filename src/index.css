@@ -5,21 +5,33 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: 4rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#page-wrap {
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; */
 }
 
 .gpsicon {
   position: absolute;
-  top: 10rem;
+  top: 2rem;
   right: 2rem;
   z-index: 10;
   margin: 0;
   padding: 0;
   height: 5vh;
   width: 5vh;
+}
+
+.map-list-container {
+  float: right;
 }
