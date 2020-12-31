@@ -8,12 +8,13 @@ import '../index.css';
 // To access places libarary with Google Maps API
 const libraries = ["places"]
 
-function MapFunc() {
+function MapFunc({ callbackFromHome }) {
   const [initLocation, setInitLocation] = useState({lat: 0, long: 0})
   const [treatmentLocs, updateTreatmentLocs] = useState([])
   const [selectedTreatmentLoc, setSelectedTreatmentLoc] = useState(null)
   const [selectedTreatmentLocDetails, setSelectedTreatmentLocDetails] = useState(null)
   const [onCenter, setOnCenter] = useState(true)
+  const [placesList, setPlacesList] = useState(null)
 
   // Creates a Map Reference to only load once
   const mapRef = React.useRef()
@@ -41,6 +42,11 @@ function MapFunc() {
     }
   }, [])
 
+  useEffect(() => {
+    if(placesList === null) console.log("null")
+    else getPlacesDetails(placesList)
+  }, [placesList])
+
   // Called when searching for treatment centers in radius
   const fetchPlaces = () => {
     const google = window.google
@@ -54,9 +60,34 @@ function MapFunc() {
 
     service.textSearch(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-        updateTreatmentLocs(results);
+        setPlacesList(results)
+        updateTreatmentLocs(results)
       }
     })
+  }
+
+  // Gets detailed places for MapList
+  const getPlacesDetails = async placesArr => {
+    const google = window.google
+    const service = new google.maps.places.PlacesService(mapRef.current)
+
+    let detailedPlacesArr = await Promise.all(
+      placesArr.map(currentPlace => {
+        return new Promise((resolve) => 
+          service.getDetails({
+            placeId: currentPlace.place_id
+          }, (place, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+              // console.log(place)
+              // detailedOutputPlace = place
+              return resolve(place)
+            }
+            return resolve(null)
+        }))
+      })
+    )
+
+    callbackFromHome(detailedPlacesArr)
   }
 
   // Called when clicking on Marker
@@ -95,8 +126,8 @@ function MapFunc() {
 
   // TODO add Google Map ordered list
   return (
-    <div style={{position: 'relative'}}>
-      <a onClick={() => panToLoc(initLocation, true)}>
+    <div>
+      <a onClick={() => panToLoc(initLocation, true)} style={{cursor: 'pointer'}}>
         {onCenter ? <MdGpsFixed className="gpsicon"  /> : <MdGpsNotFixed className="gpsicon" />}
       </a>
       <GoogleMap
