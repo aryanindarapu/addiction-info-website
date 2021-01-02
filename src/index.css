@@ -42,3 +42,8 @@ code {
   overflow-x: hidden; 
   overflow-y: auto; 
 }
+
+.cardbody:hover {
+  background-color: aquamarine;
+  cursor: pointer;
+}
