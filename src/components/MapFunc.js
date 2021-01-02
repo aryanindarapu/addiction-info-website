@@ -32,7 +32,7 @@ function MapFunc({ callbackFromHome }) {
     })
 
     const listener = e => {
-      if (e.key === "Escape") selectedTreatmentLoc(null)
+      if (e.key === "Escape") setSelectedTreatmentLoc(null)
     }
   
     window.addEventListener("keydown", listener)
@@ -78,8 +78,6 @@ function MapFunc({ callbackFromHome }) {
             placeId: currentPlace.place_id
           }, (place, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-              // console.log(place)
-              // detailedOutputPlace = place
               return resolve(place)
             }
             return resolve(null)

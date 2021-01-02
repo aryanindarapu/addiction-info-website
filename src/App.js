@@ -11,12 +11,12 @@ import Info from './components/Pages/Info';
 export default class App extends Component {
   render() {
     return (
-      <div style={{'overflow': 'hidden'}}>
+      <div style={{overflowX: 'hidden'}}>
         <Router>
           <Navbar />
           
           <Switch>
-            <Route path="/home" exact component={Home} />
+            <Route path="/" exact component={Home} />
             <Route path="/about" exact component={About} />
             <Route path="/info" exact component={Info} />
           </Switch>

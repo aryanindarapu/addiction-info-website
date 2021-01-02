@@ -8,7 +8,6 @@ function Home() {
   const [mapData, setMapData] = useState([])
 
   const getMapData = (data) => {
-    console.log(data[1])
     setMapData(data)
   } 
 
@@ -18,7 +17,7 @@ function Home() {
         <div className="col nopadding">
           <MapFunc callbackFromHome={getMapData} />
         </div>
-        <div className="col nopadding">
+        <div className="col nopadding scroll">
           <MapList data={mapData} />
         </div>
       </div>
