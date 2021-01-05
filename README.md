@@ -14,6 +14,7 @@ In development
 
 ## Major Updates
 11/29/2020 - Pushed all current work to public GitHub page for others to see
+12/30/2020 - Added full Google Maps functionality
 
 ## Available Scripts
 
