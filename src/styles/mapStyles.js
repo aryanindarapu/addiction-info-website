@@ -180,3 +180,7 @@ export const mapContainerStyle = {
     width: '100%',
     height: 'calc(100vh - 80px)',
 }
+
+export const blueIcon = {
+    url: 'https://www.pngkit.com/png/full/129-1294869_pin-location-map-icon-navigation-symbol-ma-google.png',
+}

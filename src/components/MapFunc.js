@@ -8,13 +8,13 @@ import '../index.css';
 // To access places libarary with Google Maps API
 const libraries = ["places"]
 
-function MapFunc({ callbackFromHome }) {
+function MapFunc({ callbackFromHome, data }) {
   const [initLocation, setInitLocation] = useState({lat: 0, long: 0})
-  const [treatmentLocs, updateTreatmentLocs] = useState([])
+  const [treatmentLocs, updateTreatmentLocs] = useState(null)
   const [selectedTreatmentLoc, setSelectedTreatmentLoc] = useState(null)
   const [selectedTreatmentLocDetails, setSelectedTreatmentLocDetails] = useState(null)
   const [onCenter, setOnCenter] = useState(true)
-  const [placesList, setPlacesList] = useState(null)
+  const [clickedIcon, setClickedIcon] = useState(null)
 
   // Creates a Map Reference to only load once
   const mapRef = React.useRef()
@@ -43,9 +43,18 @@ function MapFunc({ callbackFromHome }) {
   }, [])
 
   useEffect(() => {
-    if(placesList === null) console.log("null")
-    else getPlacesDetails(placesList)
-  }, [placesList])
+    if(treatmentLocs === null) console.log("placesList is null")
+    else getPlacesDetails(treatmentLocs)
+  }, [treatmentLocs])
+
+  useEffect(() => {
+    if (data.length === 0) console.log("No clicked location yet.")
+    else {
+      console.log(data)
+      setClickedIcon(data)
+      panToLoc(data.geometry.location)
+    }
+  }, [data])
 
   // Called when searching for treatment centers in radius
   const fetchPlaces = () => {
@@ -60,7 +69,7 @@ function MapFunc({ callbackFromHome }) {
 
     service.textSearch(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-        setPlacesList(results)
+        // Sets the list of places
         updateTreatmentLocs(results)
       }
     })
@@ -90,11 +99,13 @@ function MapFunc({ callbackFromHome }) {
 
   // Called when clicking on Marker
   const openInfoWindow = (selectedPlace) => {
-    panToLoc(selectedPlace.geometry.location)
+    console.log(selectedPlace)
+    panToLoc(selectedPlace.geometry.location, false)
     const google = window.google
     const service = new google.maps.places.PlacesService(mapRef.current)
 
-    setSelectedTreatmentLoc(selectedPlace, false)
+    setSelectedTreatmentLoc(selectedPlace)
+    // console.log(selectedPlace.place_id)
 
     service.getDetails({
       placeId: selectedPlace.place_id
@@ -105,10 +116,14 @@ function MapFunc({ callbackFromHome }) {
     })
   }
 
-  // Pans to initial location and changes icon to solid
+  // Pans to location and changes gps icon to solid
   const panToLoc = (loc, center) => {
     mapRef.current.panTo(loc)
+
+    // Checks if it is center
     if (center) {
+      setSelectedTreatmentLoc(null)
+      setClickedIcon(null)
       mapRef.current.setZoom(13)
       setOnCenter(center)
     }
@@ -122,7 +137,6 @@ function MapFunc({ callbackFromHome }) {
   if (loadError) return "Error Loading Maps"
   if (!isLoaded) return "Loading Map..." // TODO Implement loading screen
 
-  // TODO add Google Map ordered list
   return (
     <div>
       <a onClick={() => panToLoc(initLocation, true)} style={{cursor: 'pointer'}}>
@@ -137,13 +151,27 @@ function MapFunc({ callbackFromHome }) {
         onTilesLoaded={fetchPlaces}
         onCenterChanged={() => setOnCenter(false)}
       >
-        {treatmentLocs && treatmentLocs.map((place, i) =>
-          <Marker 
-            key={i}
-            position={place.geometry.location}
-            onClick={() => openInfoWindow(place)}
+        {treatmentLocs && treatmentLocs.map((place, i) => {
+          return (
+            <Marker 
+              key={i}
+              position={place.geometry.location}
+              onClick={() => openInfoWindow(place)}
+              icon={{
+                url: 'https://www.pinclipart.com/picdir/big/17-171343_maps-clipart-map-pin-google-maps-marker-blue.png',
+                scaledSize: new window.google.maps.Size(619 * 0.038, 999 * 0.038)
+              }}
+            />
+          )
+        })}
+        
+        {clickedIcon && 
+          <Marker
+            position={clickedIcon.geometry.location}
+            onClick={() => openInfoWindow(clickedIcon)}
           />
-        )}
+        }
+
         {// TODO Pan to nearest location
         selectedTreatmentLoc && selectedTreatmentLocDetails && (
           <InfoWindow            

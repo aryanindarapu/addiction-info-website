@@ -5,7 +5,7 @@ import { FormattedCard } from './FormattedCard';
 
 import '../index.css';
 
-function MapList({ data }) {
+function MapList({ callbackFromHome, data }) {
   // TODO Implement list loading screen
   if (data === []) return console.log("one sec")
 
@@ -14,7 +14,7 @@ function MapList({ data }) {
       {
         data.map((place) => {
           if (place !== null)
-            return (<FormattedCard place={place} />)
+            return (<FormattedCard place={place} callbackFromHome={callbackFromHome} />)
         })
       }
     </div>

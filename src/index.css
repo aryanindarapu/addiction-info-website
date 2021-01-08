@@ -44,6 +44,11 @@ code {
 }
 
 .cardbody:hover {
-  background-color: aquamarine;
+  background-color: rgb(240, 240, 240);
+  cursor: pointer;
+}
+
+.cardbody-clicked {
+  background-color: rgb(240, 240, 240);
   cursor: pointer;
 }
