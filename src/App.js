@@ -9,26 +9,14 @@ import About from './components/Pages/About';
 import Info from './components/Pages/Info';
 
 export default class App extends Component {
-  componentDidMount() {
-    var mysql = require('mysql')
-    var connection = mysql.createConnection({
-      host: process.env.RDS_HOSTNAME,
-      user: process.env.RDS_USERNAME,
-      password: process.env.RDS_PASSWORD,
-      port: process.env.RDS_PASSWORD,
-      database: process.env.RDS_DB
-    })
+  state = {
+    data: undefined
+  }
 
-    connection.connect(function(err) {
-      if (err) {
-        console.error('Database connection failed: ' + err.stack);
-        return;
-      }
-    
-      console.log('Connected to database.');
-    });
-
-
+  async componentDidMount() {
+    let response = await fetch(process.env.REACT_APP_API_ENDPOINT)
+    let data = await response.json()
+    console.log(data[0].firstName)
   }
 
   render() {
