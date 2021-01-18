@@ -17,7 +17,7 @@ export default class App extends Component {
 
     // Pulls data from testData database
 
-    const exampleObj = { firstName: 'final', lastName: 'testPerson' }
+    const exampleObj = { firstName: 'Clark', lastName: 'Kent' }
     fetch(process.env.REACT_APP_PUSH_API_ENDPOINT, {
       method: 'POST', // or 'PUT','
       mode: 'cors',
