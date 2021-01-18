@@ -50,7 +50,6 @@ function MapFunc({ callbackFromHome, data }) {
   useEffect(() => {
     if (data.length === 0) console.log("No clicked location yet.")
     else {
-      console.log(data)
       setClickedIcon(data)
       panToLoc(data.geometry.location)
     }
@@ -99,13 +98,11 @@ function MapFunc({ callbackFromHome, data }) {
 
   // Called when clicking on Marker
   const openInfoWindow = (selectedPlace) => {
-    console.log(selectedPlace)
     panToLoc(selectedPlace.geometry.location, false)
     const google = window.google
     const service = new google.maps.places.PlacesService(mapRef.current)
 
     setSelectedTreatmentLoc(selectedPlace)
-    // console.log(selectedPlace.place_id)
 
     service.getDetails({
       placeId: selectedPlace.place_id
