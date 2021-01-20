@@ -20,6 +20,7 @@
     "react-icons": "^4.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "react-star-ratings": "^2.3.0",
     "react-web-tabs": "^1.0.1",
     "web-vitals": "^0.2.4"
   },

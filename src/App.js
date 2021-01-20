@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './components/Pages/Home';
 import About from './components/Pages/About';
 import Info from './components/Pages/Info';
+import AddRating from './components/Pages/AddRating';
 
 export default class App extends Component {
   render() {
@@ -19,6 +20,7 @@ export default class App extends Component {
             <Route path="/" exact component={Home} />
             <Route path="/about" exact component={About} />
             <Route path="/info" exact component={Info} />
+            <Route path='/addrating' exact component={AddRating} />
           </Switch>
         </Router>
       </div> 
