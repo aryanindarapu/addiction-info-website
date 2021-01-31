@@ -69,34 +69,45 @@ function MapFunc({ callbackFromHome, data }) {
 
     const request = {
       location: mapRef.current.getCenter(),
-      radius: 10000,
-      query: 'addiction treatment centers'
+      radius: 50000,
+      query: 'addiction treatment centers',
     }
 
     service.textSearch(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         // Sets the list of places
         updateTreatmentLocs(results)
+        console.log(results)
+        // console.log("This is the list of original places: ")
+        // console.log(JSON.parse(JSON.stringify(results)))
       }
     })
   }
 
   // Gets detailed places for MapList
   const getPlacesDetails = async placesArr => {
+    let wait = false
     const google = window.google
     const service = new google.maps.places.PlacesService(mapRef.current)
 
     let detailedPlacesArr = await Promise.all(
       placesArr.map(currentPlace => {
-        return new Promise((resolve) => 
+        return new Promise((resolve) => {
           service.getDetails({
-            placeId: currentPlace.place_id
+            placeId: currentPlace.place_id,
+            fields: ['name', 'vicinity', 'formatted_phone_number', 'geometry', 'place_id']
           }, (place, status) => {
+            // if (status === google.maps.PlacesServiceStatus.OVER_QUERY_LIMIT) {
+            //   setTimeout(2000);
+            // }
+
             if (status === google.maps.places.PlacesServiceStatus.OK) {
               return resolve(place)
             }
-            return resolve(null)
-        }))
+            // console.log("going to return null")
+            return resolve(place)
+          })
+        })
       })
     )
 
@@ -135,7 +146,7 @@ function MapFunc({ callbackFromHome, data }) {
 
   // Gets Autocomplete Location
   const onAutocompleteChanged = () => {
-    if (autocomplete.current !== null) {
+    if (autocomplete.current !== undefined && autocomplete.current.getPlace().geometry !== undefined) {
       panToLoc(autocomplete.current.getPlace().geometry.location, false)
 
     } else {
@@ -171,7 +182,7 @@ function MapFunc({ callbackFromHome, data }) {
           >
             <input
               type="text"
-              placeholder="Set custom center"
+              placeholder="Change Search Area"
               style={{
                 boxSizing: `border-box`,
                 border: `1px solid transparent`,

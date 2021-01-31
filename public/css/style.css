@@ -288,9 +288,10 @@ header .intro-text {
 }
 /* Services Section */
 #services {
-	padding: 100px 0;
+	padding: 80px 0;
 	background: linear-gradient(to right, #6372ff 0%, #5ca9fb 100%);
 	color: #fff;
+	height: 80%;
 }
 #services .service-desc {
 	margin: 10px 10px 20px;
@@ -320,11 +321,14 @@ header .intro-text {
 }
 #services h3 {
 	font-weight: 500;
-	padding: 5px 0;
+	padding: 2px 0;
 	color: #fff;
+	font-size: 22px;
 }
 #services p {
 	color: rgba(255,255,255,.75);
+	padding-left: 10%;
+	padding-right: 10%;
 }
 #services .service-desc {
 	margin-bottom: 40px;

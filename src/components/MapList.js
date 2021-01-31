@@ -12,9 +12,9 @@ function MapList({ callbackFromHome, data }) {
   return (
     <div className="scroll">
       {
-        data.map((place) => {
+        data.map((place, i) => {
           if (place !== null)
-            return (<FormattedCard place={place} callbackFromHome={callbackFromHome} />)
+            return (<FormattedCard key={i} place={place} callbackFromHome={callbackFromHome} />)
         })
       }
     </div>
