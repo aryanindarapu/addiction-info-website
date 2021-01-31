@@ -43,6 +43,13 @@ code {
   overflow-y: auto; 
 }
 
+.info-background {
+  height: calc(100vh - 80px);
+  overflow-x: hidden; 
+  overflow-y: auto;
+  background-color: #608afd;
+}
+
 .cardbody:hover {
   background-color: rgb(240, 240, 240);
   cursor: pointer;

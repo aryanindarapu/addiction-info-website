@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, InfoWindow, Autocomplete } from '@react-google-maps/api';
 import { MdGpsFixed, MdGpsNotFixed } from 'react-icons/md'; 
 
 import { mapContainerStyle, options } from '../styles/mapStyles';
@@ -19,9 +19,16 @@ function MapFunc({ callbackFromHome, data }) {
   // Creates a Map Reference to only load once
   const mapRef = React.useRef()
   
-  const onMapLoad = React.useCallback((map) => {
+  // Creates an Autocomplete Reference
+  const autocomplete = React.useRef()
+  
+  const onMapLoad = React.useCallback(map => {
     setOnCenter(true)
     mapRef.current = map
+  }, [])
+
+  const onAutcompleteLoad = React.useCallback(auto => {
+    autocomplete.current = auto
   }, [])
 
   useEffect(() => {
@@ -62,34 +69,45 @@ function MapFunc({ callbackFromHome, data }) {
 
     const request = {
       location: mapRef.current.getCenter(),
-      radius: 500,
-      query: 'addiction treatment centers'
+      radius: 50000,
+      query: 'addiction treatment centers',
     }
 
     service.textSearch(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         // Sets the list of places
         updateTreatmentLocs(results)
+        console.log(results)
+        // console.log("This is the list of original places: ")
+        // console.log(JSON.parse(JSON.stringify(results)))
       }
     })
   }
 
   // Gets detailed places for MapList
   const getPlacesDetails = async placesArr => {
+    let wait = false
     const google = window.google
     const service = new google.maps.places.PlacesService(mapRef.current)
 
     let detailedPlacesArr = await Promise.all(
       placesArr.map(currentPlace => {
-        return new Promise((resolve) => 
+        return new Promise((resolve) => {
           service.getDetails({
-            placeId: currentPlace.place_id
+            placeId: currentPlace.place_id,
+            fields: ['name', 'vicinity', 'formatted_phone_number', 'geometry', 'place_id']
           }, (place, status) => {
+            // if (status === google.maps.PlacesServiceStatus.OVER_QUERY_LIMIT) {
+            //   setTimeout(2000);
+            // }
+
             if (status === google.maps.places.PlacesServiceStatus.OK) {
               return resolve(place)
             }
-            return resolve(null)
-        }))
+            // console.log("going to return null")
+            return resolve(place)
+          })
+        })
       })
     )
 
@@ -97,7 +115,7 @@ function MapFunc({ callbackFromHome, data }) {
   }
 
   // Called when clicking on Marker
-  const openInfoWindow = (selectedPlace) => {
+  const openInfoWindow = selectedPlace => {
     panToLoc(selectedPlace.geometry.location, false)
     const google = window.google
     const service = new google.maps.places.PlacesService(mapRef.current)
@@ -126,6 +144,16 @@ function MapFunc({ callbackFromHome, data }) {
     }
   }
 
+  // Gets Autocomplete Location
+  const onAutocompleteChanged = () => {
+    if (autocomplete.current !== undefined && autocomplete.current.getPlace().geometry !== undefined) {
+      panToLoc(autocomplete.current.getPlace().geometry.location, false)
+
+    } else {
+      console.log('Autocomplete is not loaded yet!')
+    }
+  }
+
   const {isLoaded, loadError} = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: libraries
@@ -148,6 +176,30 @@ function MapFunc({ callbackFromHome, data }) {
         onTilesLoaded={fetchPlaces}
         onCenterChanged={() => setOnCenter(false)}
       >
+        <Autocomplete
+            onLoad={onAutcompleteLoad}
+            onPlaceChanged={onAutocompleteChanged}
+          >
+            <input
+              type="text"
+              placeholder="Change Search Area"
+              style={{
+                boxSizing: `border-box`,
+                border: `1px solid transparent`,
+                width: `25vw`,
+                height: `40px`,
+                padding: `0 12px`,
+                borderRadius: `3px`,
+                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                fontSize: `16px`,
+                outline: `none`,
+                textOverflow: `ellipses`,
+                position: "absolute",
+                left: "25%",
+                // marginLeft: "-120px"
+              }}
+            />
+          </Autocomplete>
         {treatmentLocs && treatmentLocs.map((place, i) => {
           return (
             <Marker 
