@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { FormattedCard } from './FormattedCard';
-
-
 import '../index.css';
 
 function MapList({ callbackFromHome, data }) {

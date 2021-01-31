@@ -287,19 +287,19 @@ header .intro-text {
 	margin: 30px 0;
 }
 /* Services Section */
-#services {
+#treatment-types {
 	padding: 80px 0;
 	background: linear-gradient(to right, #6372ff 0%, #5ca9fb 100%);
 	color: #fff;
 	height: 80%;
 }
-#services .service-desc {
+#treatment-types .treatment-types-desc {
 	margin: 10px 10px 20px;
 }
-#services h2 {
+#treatment-types h2 {
 	color: #fff;
 }
-#services .section-title h2::after {
+#treatment-types .section-title h2::after {
 	position: absolute;
 	content: "";
 	background: rgba(255,255,255,.3);
@@ -309,7 +309,7 @@ header .intro-text {
 	margin-left: -30px;
 	left: 50%;
 }
-#services i.fa {
+#treatment-types i.fa {
 	font-size: 42px;
 	width: 120px;
 	height: 120px;
@@ -319,19 +319,32 @@ header .intro-text {
 	color: #fff;
 	box-shadow: 10px 10px 10px rgba(0,0,0,.05);
 }
-#services h3 {
+#treatment-types h3 {
 	font-weight: 500;
 	padding: 2px 0;
 	color: #fff;
 	font-size: 22px;
 }
-#services p {
+#treatment-types h4 {
+	font-size: 18px;
+}
+#treatment-types p {
 	color: rgba(255,255,255,.75);
 	padding-left: 10%;
 	padding-right: 10%;
 }
-#services .service-desc {
+#treatment-types .service-desc {
 	margin-bottom: 40px;
+}
+#treatment-types .med-tabs h2 {
+	position: absolute;
+	content: "";
+	background: rgba(255,255,255,.3);
+	height: 4px;
+	width: 60px;
+	bottom: 0;
+	margin-left: -30px;
+	left: 50%;
 }
 /* Portfolio Section */
 #portfolio {
